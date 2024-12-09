@@ -1,0 +1,142 @@
+.team-list-container {
+    padding: 24px;
+    background: #fff;
+    min-height: 100vh;
+  }
+  
+  .header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .title-section {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .title-section h1 {
+    margin: 0;
+    font-size: 28px;
+    color: #1a1a1a;
+  }
+  
+  .subtitle {
+    color: #8c8c8c;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 12px;
+  }
+  
+  .add-team-btn {
+    background: #1890ff;
+  }
+  
+  .search-section {
+    margin-bottom: 24px;
+  }
+  
+  .search-input {
+    max-width: 400px;
+  }
+  
+  .teams-table {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+  
+  .team-name-cell {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .team-name {
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+  
+  .team-city {
+    font-size: 12px;
+    color: #8c8c8c;
+  }
+  
+  .coach-name {
+    color: #595959;
+  }
+  
+  .roster-size {
+    color: #595959;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .header-section {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+  
+    .action-buttons {
+      flex-wrap: wrap;
+    }
+  
+    .teams-table {
+      overflow-x: auto;
+    }
+  }
+  
+  /* Table Hover Effects */
+  .teams-table .ant-table-tbody > tr:hover {
+    background-color: #f5f5f5;
+  }
+  
+  /* Button Hover Effects */
+  .action-buttons button:hover {
+    transform: translateY(-1px);
+    transition: transform 0.2s;
+  }
+  
+  /* Loading State */
+  .ant-spin-spinning {
+    opacity: 0.8;
+  }
+  
+  /* Empty State */
+  .ant-table-placeholder {
+    padding: 48px 0;
+  }
+  
+  /* Search Input Focus */
+  .search-input:focus {
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  }
+  
+  .action-button {
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+  
+  .action-button:active {
+    transform: scale(0.98);
+  }
+  
+  .action-button:focus {
+    outline: none;
+  }
+  
+  /* Override Ant Design's wave effect */
+  .action-button::after {
+    display: none !important;
+  }
