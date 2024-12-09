@@ -1,7 +1,7 @@
 import { Team } from "./Team";
 
 export interface Coach {
-    id: string;
+    _id: string;
     firstName: string;
     lastName: string;
     experience: number;

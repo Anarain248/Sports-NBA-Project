@@ -6,9 +6,6 @@ export interface Team {
     name: string;
     city: string;
     conference: 'Eastern' | 'Western';
-    coach?: {
-      firstName: string;
-      lastName: string;
-    };
-    players?: any[];
+    coach?: Coach;
+    players?: Player[];
   }

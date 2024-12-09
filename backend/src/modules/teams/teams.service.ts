@@ -27,25 +27,12 @@ export class TeamsService {
     }
   }
 
-  async findAll(query: any): Promise<Team[]> {
-    const { search, conference, ...rest } = query;
-    let filter: any = { ...rest };
-
-    if (search) {
-      filter.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { city: { $regex: search, $options: 'i' } },
-      ];
-    }
-
-    if (conference) {
-      filter.conference = conference;
-    }
-
-    return this.teamModel
-      .find(filter)
-      .populate('coach')
-      .populate('players')
+  async findAll(query?: any): Promise<Team[]> {
+    return this.teamModel.find(query || {})
+      .populate({
+        path: 'coach',
+        select: 'firstName lastName'
+      })
       .exec();
   }
 

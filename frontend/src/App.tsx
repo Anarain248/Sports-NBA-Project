@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import TeamList from './components/teams/TeamList.tsx';
 import TeamForm from './components/teams/TeamForm.tsx';
+import CoachList from './components/coaches/CoachList.tsx';
+import CoachForm from './components/coaches/CoachForm.tsx';
 
 const App: React.FC = () => {
   return (
@@ -24,6 +26,9 @@ const App: React.FC = () => {
             <Route path="/teams" element={<TeamList />} />
             <Route path="/teams/new" element={<TeamForm />} />
             <Route path="/teams/edit/:id" element={<TeamForm />} />
+            <Route path="/coaches" element={<CoachList />} />
+            <Route path="/coaches/new" element={<CoachForm />} />
+            <Route path="/coaches/edit/:id" element={<CoachForm />} />
           </Routes>
         </div>
       </Router>

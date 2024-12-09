@@ -93,13 +93,12 @@ const TeamList: React.FC = () => {
     },
     {
       title: 'Coach',
-      dataIndex: 'coach',
       key: 'coach',
-      render: (coach: any) => (
-        <span className="coach-name">
-          {coach ? `${coach.firstName} ${coach.lastName}` : 'No Coach Assigned'}
-        </span>
-      ),
+      render: (_: string, record: Team) => {
+        return record.coach 
+          ? `${record.coach.firstName} ${record.coach.lastName}`
+          : 'No Coach Assigned';
+      },
     },
     {
       title: 'Roster Size',
