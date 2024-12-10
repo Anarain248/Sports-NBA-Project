@@ -5,7 +5,6 @@ const API_BASE_URL = 'http://localhost:8000/api/teams';
 
 export const getTeams = async (): Promise<Team[]> => {
   const response = await axios.get(API_BASE_URL);
-  console.log(response, 'res!')
   return response.data;
 };
 

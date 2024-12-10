@@ -1,0 +1,59 @@
+.table-container {
+  padding: 24px;
+  background: #fff;
+  min-height: 100vh;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.title-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.title-section h1 {
+  margin: 0;
+  font-size: 24px;
+  color: #1a1a1a;
+}
+
+.subtitle {
+  color: #8c8c8c;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+/* Table styles */
+.ant-table {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.ant-table-thead > tr > th {
+  background: #fafafa;
+  font-weight: 500;
+}
+
+/* Card styles for coach view */
+.ant-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.ant-card-body h2 {
+  margin-top: 0;
+  color: #1a1a1a;
+}
+
+/* Empty state styling */
+.ant-empty {
+  padding: 40px 0;
+} 

@@ -2,13 +2,16 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TeamsModule } from './modules/teams/teams.module';
 import { CoachesModule } from './modules/coaches/coaches.module';
+import { PlayersModule } from './modules/players/players.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/nba-management'),
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGODB_URI),
     TeamsModule,
     CoachesModule,
-    // Add other modules here
+    PlayersModule
   ],
 })
 export class AppModule {}

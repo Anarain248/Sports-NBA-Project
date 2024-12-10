@@ -9,7 +9,7 @@ export class Player extends Document {
   @Prop({ required: true })
   lastName: string;
 
-  @Prop({ required: true, enum: ['PG', 'SG', 'SF', 'PF', 'C'] })
+  @Prop({ required: true })
   position: string;
 
   @Prop({ required: true })
@@ -19,23 +19,10 @@ export class Player extends Document {
   height: string;
 
   @Prop()
-  weight: number;
+  weight: string;
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Team' })
   team: MongooseSchema.Types.ObjectId;
-
-  @Prop({
-    type: {
-      pointsPerGame: Number,
-      assistsPerGame: Number,
-      reboundsPerGame: Number,
-    }
-  })
-  stats: {
-    pointsPerGame: number;
-    assistsPerGame: number;
-    reboundsPerGame: number;
-  };
 }
 
 export const PlayerSchema = SchemaFactory.createForClass(Player); 

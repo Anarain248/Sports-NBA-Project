@@ -1,0 +1,41 @@
+.player-list-container {
+  padding: 24px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.title-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.title-section h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.title-section .subtitle {
+  color: #666;
+  font-size: 14px;
+}
+
+.search-section {
+  margin-bottom: 16px;
+}
+
+.table-section {
+  margin-top: 16px;
+}
+
+.ant-table-wrapper {
+  background: white;
+  border-radius: 8px;
+} 

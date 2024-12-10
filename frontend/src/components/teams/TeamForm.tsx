@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Select, message, Space } from 'antd';
+import { Form, Input, Button, Select, message, Space, Tooltip } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createTeam, getTeamById, updateTeam, getTeams } from '../../services/teamService.ts';
 import { Team } from '../../models/Team';
-import { ArrowLeftOutlined, SaveOutlined } from '@ant-design/icons';
-import '../../styles/TeamForm.css';
+import { ArrowLeftOutlined, SaveOutlined, HomeOutlined } from '@ant-design/icons';
+import '../../styles/common/FormStyles.css';
 import { NBA_CITIES, CONFERENCE_MAPPING, VALID_TEAM_NAMES_FOR_CITY, NBA_TEAM_NAMES } from '../../constants/enums.ts';
 
 const { Option } = Select;
@@ -17,6 +17,7 @@ const TeamForm: React.FC = () => {
   const [isDuplicateName, setIsDuplicateName] = useState(false);
   const [selectedCity, setSelectedCity] = useState<string>('');
   const [validTeamNames, setValidTeamNames] = useState<string[]>([]);
+  const [hasAssignments, setHasAssignments] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -28,16 +29,26 @@ const TeamForm: React.FC = () => {
     try {
       const team = await getTeamById(id!);
       form.setFieldsValue(team);
+      setHasAssignments((team.players && team.players.length > 0) || !!team.coach);
     } catch (error) {
       message.error('Failed to fetch team details');
       navigate('/teams');
     }
   };
 
-  const onFinish = async (values: Partial<Team>) => {
+  const onFinish = async (values: any) => {
     try {
       setLoading(true);
       if (id) {
+        // Check if team has players or coach before allowing edit
+        const currentTeam = await getTeamById(id);
+        if (
+          (currentTeam.city !== values.city || currentTeam.name !== values.name) && 
+          ((currentTeam.players && currentTeam.players.length > 0) || currentTeam.coach)
+        ) {
+          message.error('Cannot modify team details while players or coach are assigned');
+          return;
+        }
         await updateTeam(id, values);
         message.success('Team updated successfully');
       } else {
@@ -92,13 +103,22 @@ const TeamForm: React.FC = () => {
   };
 
   return (
-    <div className="team-form-container">
-      <h1>{id ? 'Edit Team' : 'Create New Team'}</h1>
+    <div className="form-container">
+      <div className="header-section">
+        <h1>{id ? 'Edit Team' : 'Create New Team'}</h1>
+        <Button 
+          onClick={() => navigate('/teams')}
+          icon={<HomeOutlined />}
+        >
+          Back to Teams
+        </Button>
+      </div>
+      
       <Form
         form={form}
         layout="vertical"
         onFinish={onFinish}
-        className="team-form"
+        className="form-section"
         size="large"
       >
         <Form.Item
@@ -161,26 +181,23 @@ const TeamForm: React.FC = () => {
           <Input />
         </Form.Item>
 
-        <Form.Item>
-          <Space>
+        <div className="form-buttons">
+          <Tooltip title={
+            hasAssignments 
+              ? "Cannot modify team with assigned players or coach" 
+              : (id ? "Save changes to team" : "Create new team")
+          }>
             <Button 
-              type="default" 
-              onClick={() => navigate('/teams')}
-              icon={<ArrowLeftOutlined />}
-            >
-              Back
-            </Button>
-            <Button 
-              type="primary" 
-              htmlType="submit" 
+              type="primary"
+              htmlType="submit"
               loading={loading}
-              disabled={isDuplicateName}
+              disabled={Boolean(isDuplicateName) || (Boolean(id) && hasAssignments)}
               icon={<SaveOutlined />}
             >
               {id ? 'Update Team' : 'Create Team'}
             </Button>
-          </Space>
-        </Form.Item>
+          </Tooltip>
+        </div>
       </Form>
     </div>
   );

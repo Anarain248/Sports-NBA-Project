@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Table, Modal, message, Input, Tag } from 'antd';
+import { Button, Table, Modal, message, Input, Tag, Space, Tooltip } from 'antd';
 import { Team } from '../../models/Team';
-import { getTeams, deleteTeam } from '../../services/teamService.ts';
+import { getTeams, deleteTeam, getTeamById } from '../../services/teamService.ts';
 import { useNavigate } from 'react-router-dom';
 import { 
   TeamOutlined, 
@@ -10,7 +10,9 @@ import {
   SearchOutlined,
   EditOutlined,
   DeleteOutlined,
-  UserSwitchOutlined
+  UserSwitchOutlined,
+  HomeOutlined,
+  UserAddOutlined
 } from '@ant-design/icons';
 import '../../styles/TeamList.css';
 
@@ -52,13 +54,22 @@ const TeamList: React.FC = () => {
 
   const handleDelete = async (teamId: string) => {
     try {
+      const team = await getTeamById(teamId);
+      
+      if (team.players && team.players.length > 0) {
+        message.error('Cannot delete team with assigned players. Please remove all players first.');
+        return;
+      }
+
+      if (team.coach) {
+        message.error('Cannot delete team with an assigned coach. Please remove the coach first.');
+        return;
+      }
+
       await deleteTeam(teamId);
-      const updatedTeams = teams.filter(team => team._id !== teamId);
-      setTeams(updatedTeams);
-      setFilteredTeams(updatedTeams);
       message.success('Team deleted successfully');
+      fetchTeams();
     } catch (error) {
-      console.error('Delete error:', error);
       message.error('Failed to delete team');
     }
   };
@@ -113,45 +124,58 @@ const TeamList: React.FC = () => {
     {
       title: 'Actions',
       key: 'actions',
-      render: (_: string, record: Team) => (
-        <div className="action-buttons">
-          <Button 
-            type="primary"
-            icon={<EditOutlined />}
-            onClick={() => navigate(`/teams/edit/${record._id}`)}
-            title="Edit Team"
-            className="action-button"
-          >
-            Edit
-          </Button>
-          <Button 
-            icon={<UserOutlined />}
-            onClick={() => navigate(`/teams/${record._id}/players`)}
-            title="Manage Players"
-            className="action-button"
-          >
-            Players
-          </Button>
-          <Button 
-            icon={<UserSwitchOutlined />}
-            onClick={() => navigate(`/teams/${record._id}/coach`)}
-            title="Manage Coach"
-            className="action-button"
-          >
-            Coach
-          </Button>
-          <Button 
-            type="primary" 
-            danger
-            icon={<DeleteOutlined />}
-            onClick={() => handleDelete(record._id)}
-            title="Delete Team"
-            className="action-button"
-          >
-            Delete
-          </Button>
-        </div>
-      ),
+      render: (_: string, record: Team) => {
+        const hasAssignments = ((record.players && record.players.length > 0) || !!record.coach);
+        const tooltipText = hasAssignments ? 
+          "Can't delete team since there are coach or players assigned" : 
+          "Delete team";
+
+        return (
+          <div className="action-buttons">
+            <Tooltip title="View team roster">
+              <Button 
+                onClick={() => navigate(`/teams/${record._id}/players`)}
+                icon={<TeamOutlined />}
+                className="action-button"
+              >
+                Players
+              </Button>
+            </Tooltip>
+            <Tooltip title="View team coach">
+              <Button 
+                onClick={() => navigate(`/teams/${record._id}/coach`)}
+                icon={<UserOutlined />}
+                className="action-button"
+              >
+                Coach
+              </Button>
+            </Tooltip>
+            <Tooltip title={hasAssignments ? "Cannot edit team with assigned players or coach" : "Edit team details"}>
+              <Button 
+                type="primary"
+                icon={<EditOutlined />}
+                onClick={() => navigate(`/teams/edit/${record._id}`)}
+                className="action-button"
+                disabled={hasAssignments}
+              >
+                Edit
+              </Button>
+            </Tooltip>
+            <Tooltip title={tooltipText}>
+              <Button 
+                type="primary" 
+                danger
+                icon={<DeleteOutlined />}
+                onClick={() => handleDelete(record._id)}
+                disabled={hasAssignments}
+                className="action-button"
+              >
+                Delete
+              </Button>
+            </Tooltip>
+          </div>
+        );
+      },
     },
   ];
 
@@ -159,36 +183,39 @@ const TeamList: React.FC = () => {
     <div className="team-list-container">
       <div className="header-section">
         <div className="title-section">
-          <h1>NBA Teams Management</h1>
-          <span className="subtitle">Manage teams, coaches, and players</span>
+          <h1>Teams Management</h1>
+          <span className="subtitle">Manage NBA teams</span>
         </div>
-        <div className="action-buttons">
-          <Button 
-            type="primary" 
-            icon={<TeamOutlined />}
-            onClick={() => navigate('/teams/new')}
-            size="large"
-            className="add-team-btn action-button"
-          >
-            Add New Team
-          </Button>
-          <Button 
-            onClick={() => navigate('/coaches')}
-            icon={<UserOutlined />}
-            size="large"
-            className="action-button"
-          >
-            Manage Coaches
-          </Button>
-          <Button 
-            onClick={() => navigate('/players')}
-            icon={<TrophyOutlined />}
-            size="large"
-            className="action-button"
-          >
-            Manage Players
-          </Button>
-        </div>
+        <Space>
+          <Tooltip title="View and manage all coaches">
+            <Button 
+              icon={<UserOutlined />}
+              onClick={() => navigate('/coaches')}
+              size="large"
+            >
+              Manage Coaches
+            </Button>
+          </Tooltip>
+          <Tooltip title="View and manage all players">
+            <Button 
+              icon={<TeamOutlined />}
+              onClick={() => navigate('/players')}
+              size="large"
+            >
+              Manage Players
+            </Button>
+          </Tooltip>
+          <Tooltip title="Create a new NBA team">
+            <Button 
+              type="primary" 
+              icon={<UserAddOutlined />}
+              onClick={() => navigate('/teams/new')}
+              size="large"
+            >
+              Add New Team
+            </Button>
+          </Tooltip>
+        </Space>
       </div>
 
       <div className="search-section">
@@ -198,7 +225,6 @@ const TeamList: React.FC = () => {
           value={searchText}
           onChange={e => setSearchText(e.target.value)}
           className="search-input"
-          allowClear
         />
       </div>
 

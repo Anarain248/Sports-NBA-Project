@@ -44,7 +44,8 @@
   }
   
   .search-input {
-    max-width: 400px;
+    max-width: 800px;
+    width: 100%;
   }
   
   .teams-table {
@@ -139,4 +140,21 @@
   /* Override Ant Design's wave effect */
   .action-button::after {
     display: none !important;
+  }
+  
+  .action-button[disabled] {
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+  }
+  
+  .action-button[disabled].ant-btn-primary {
+    background-color: #1890ff !important;
+    border-color: #1890ff !important;
+    color: white !important;
+  }
+  
+  .action-button[disabled].ant-btn-primary.ant-btn-dangerous {
+    background-color: #ff4d4f !important;
+    border-color: #ff4d4f !important;
+    color: white !important;
   }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Space, Input, message, Popconfirm } from 'antd';
+import { Table, Button, Space, Input, message, Popconfirm, Tooltip } from 'antd';
 import type { ColumnType } from 'antd/es/table';
 import { useNavigate } from 'react-router-dom';
 import { getCoaches, deleteCoach } from '../../services/coachService.ts';
@@ -105,21 +105,25 @@ const CoachList: React.FC = () => {
           <span className="subtitle">Manage NBA team coaches</span>
         </div>
         <Space>
-          <Button 
-            icon={<HomeOutlined />}
-            onClick={() => navigate('/')}
-            size="large"
-          >
-            Home
-          </Button>
-          <Button 
-            type="primary" 
-            icon={<UserOutlined />}
-            onClick={() => navigate('/coaches/new')}
-            size="large"
-          >
-            Add New Coach
-          </Button>
+          <Tooltip title="Return to teams management">
+            <Button 
+              icon={<HomeOutlined />}
+              onClick={() => navigate('/')}
+              size="large"
+            >
+              Home
+            </Button>
+          </Tooltip>
+          <Tooltip title="Add a new coach to the system">
+            <Button 
+              type="primary" 
+              icon={<UserOutlined />}
+              onClick={() => navigate('/coaches/new')}
+              size="large"
+            >
+              Add New Coach
+            </Button>
+          </Tooltip>
         </Space>
       </div>
 
@@ -132,7 +136,7 @@ const CoachList: React.FC = () => {
       />
 
       <Table
-        columns={columns}
+        columns={columns as any}
         dataSource={coaches}
         loading={loading}
         rowKey="_id"
