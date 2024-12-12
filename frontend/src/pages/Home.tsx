@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Typography, Space, Card } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { TeamOutlined, UserOutlined, TrophyOutlined } from '@ant-design/icons';
+import { TeamOutlined, UserOutlined, TrophyOutlined, DribbbleOutlined } from '@ant-design/icons';
 import '../styles/Home.css';
 
 const { Title, Paragraph } = Typography;
@@ -12,7 +12,10 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="hero-section">
-        <Title level={1}>NBA Team Management System</Title>
+        <DribbbleOutlined className="hero-icon" />
+        <Title level={1}>
+          <span className="title-highlight">NBA</span> Team Management System
+        </Title>
         <Paragraph className="subtitle">
           Streamline your NBA team management with our comprehensive solution
         </Paragraph>
