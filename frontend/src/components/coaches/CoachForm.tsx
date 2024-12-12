@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Select, InputNumber, message, Space, Tooltip } from 'antd';
+import { Form, Input, Button, Select, InputNumber, message, Space } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createCoach, getCoachById, updateCoach, getCoaches } from '../../services/coachService.ts';
 import { getTeams } from '../../services/teamService.ts';
@@ -69,7 +69,7 @@ const CoachForm: React.FC = () => {
 
   const checkTeamHasCoach = (teamId: string) => {
     return existingCoaches.some(coach => 
-      coach.teamId === teamId && coach._id !== id
+      (coach.teamId === teamId || coach.team?._id === teamId)
     );
   };
 
@@ -220,17 +220,15 @@ const CoachForm: React.FC = () => {
         </Form.Item>
 
         <div className="form-buttons">
-          <Tooltip title={id ? "Save changes to coach" : "Create new coach"}>
-            <Button 
-              type="primary"
-              htmlType="submit"
-              loading={loading}
-              icon={<SaveOutlined />}
-              disabled={!formValid || isDuplicateName}
-            >
-              {id ? 'Update Coach' : 'Create Coach'}
-            </Button>
-          </Tooltip>
+          <Button 
+            type="primary"
+            htmlType="submit"
+            loading={loading}
+            icon={<SaveOutlined />}
+            disabled={!formValid || isDuplicateName}
+          >
+            {id ? 'Update Coach' : 'Create Coach'}
+          </Button>
         </div>
       </Form>
     </div>

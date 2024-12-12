@@ -132,7 +132,7 @@ const TeamList: React.FC = () => {
 
         return (
           <div className="action-buttons">
-            <Tooltip title="View team roster">
+            <Tooltip title="View and manage team roster">
               <Button 
                 onClick={() => navigate(`/teams/${record._id}/players`)}
                 icon={<TeamOutlined />}
@@ -141,7 +141,7 @@ const TeamList: React.FC = () => {
                 Players
               </Button>
             </Tooltip>
-            <Tooltip title="View team coach">
+            <Tooltip title="View and manage team coach">
               <Button 
                 onClick={() => navigate(`/teams/${record._id}/coach`)}
                 icon={<UserOutlined />}
@@ -155,8 +155,8 @@ const TeamList: React.FC = () => {
                 type="primary"
                 icon={<EditOutlined />}
                 onClick={() => navigate(`/teams/edit/${record._id}`)}
-                className="action-button"
                 disabled={hasAssignments}
+                className="action-button"
               >
                 Edit
               </Button>
@@ -180,13 +180,13 @@ const TeamList: React.FC = () => {
   ];
 
   return (
-    <div className="team-list-container">
-      <div className="header-section">
+    <div className="page-content">
+      <div className="page-header">
         <div className="title-section">
           <h1>Teams Management</h1>
           <span className="subtitle">Manage NBA teams</span>
         </div>
-        <Space>
+        <Space className="action-buttons">
           <Tooltip title="View and manage all coaches">
             <Button 
               icon={<UserOutlined />}
@@ -217,29 +217,30 @@ const TeamList: React.FC = () => {
           </Tooltip>
         </Space>
       </div>
+      <div className="content-section">
+        <div className="search-section">
+          <Input
+            placeholder="Search teams by name, city, or conference..."
+            prefix={<SearchOutlined />}
+            value={searchText}
+            onChange={e => setSearchText(e.target.value)}
+            className="search-input"
+          />
+        </div>
 
-      <div className="search-section">
-        <Input
-          placeholder="Search teams by name, city, or conference..."
-          prefix={<SearchOutlined />}
-          value={searchText}
-          onChange={e => setSearchText(e.target.value)}
-          className="search-input"
+        <Table 
+          columns={columns as any} 
+          dataSource={filteredTeams} 
+          loading={loading}
+          rowKey="_id"
+          pagination={{
+            pageSize: 10,
+            showSizeChanger: true,
+            showTotal: (total) => `Total ${total} teams`,
+          }}
+          className="teams-table"
         />
       </div>
-
-      <Table 
-        columns={columns as any} 
-        dataSource={filteredTeams} 
-        loading={loading}
-        rowKey="_id"
-        pagination={{
-          pageSize: 10,
-          showSizeChanger: true,
-          showTotal: (total) => `Total ${total} teams`,
-        }}
-        className="teams-table"
-      />
     </div>
   );
 };

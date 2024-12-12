@@ -108,7 +108,7 @@ const CoachList: React.FC = () => {
           <Tooltip title="Return to teams management">
             <Button 
               icon={<HomeOutlined />}
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/teams')}
               size="large"
             >
               Home

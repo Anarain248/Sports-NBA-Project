@@ -14,10 +14,12 @@ import {
 import { TeamsService } from './teams.service';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
-// import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
 
 @Controller('teams')
-// @UseGuards(JwtAuthGuard)  // Uncomment when auth is implemented
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class TeamsController {
   constructor(private readonly teamsService: TeamsService) {}
 
@@ -44,6 +46,7 @@ export class TeamsController {
   }
 
   @Post()
+  @Roles('admin')
   async create(@Body() createTeamDto: CreateTeamDto) {
     try {
       return await this.teamsService.create(createTeamDto);
@@ -53,6 +56,7 @@ export class TeamsController {
   }
 
   @Patch(':id')
+  @Roles('admin')
   async update(@Param('id') id: string, @Body() updateTeamDto: UpdateTeamDto) {
     try {
       const team = await this.teamsService.update(id, updateTeamDto);
@@ -66,6 +70,7 @@ export class TeamsController {
   }
 
   @Delete(':id')
+  @Roles('admin')
   async remove(@Param('id') id: string) {
     try {
       const team = await this.teamsService.remove(id);
