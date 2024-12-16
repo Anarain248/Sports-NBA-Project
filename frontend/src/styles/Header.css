@@ -29,4 +29,22 @@
 
 .role {
   color: #8c8c8c;
+}
+
+.nav-left h1 {
+  margin: 0;
+  transition: opacity 0.2s ease;
+}
+
+.nav-left h1:hover {
+  opacity: 0.8;
+}
+
+.title-highlight {
+  color: #1890ff;
+  font-weight: bold;
+}
+
+.top-nav.hidden {
+  display: none;
 } 

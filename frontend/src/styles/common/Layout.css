@@ -1,27 +1,43 @@
+:root {
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --border: #e5e7eb;
+  --text-primary: #1a1a1a;
+  --text-secondary: #4b5563;
+  --text-muted: #6b7280;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --radius-md: 12px;
+  --radius-lg: 16px;
+}
+
 .app-container {
   min-height: 100vh;
-  background-color: #f5f7fa;
+  background-color: var(--background);
   display: flex;
   flex-direction: column;
 }
 
 .top-nav {
-  background: white !important;
+  background: var(--surface) !important;
   height: 64px;
   padding: 0 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
+  border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: sticky;
   top: 0;
   z-index: 1000;
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.8) !important;
 }
 
 .nav-left {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
 .nav-right {
@@ -34,37 +50,41 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .content-container {
   flex: 1;
-  padding: 24px;
-  background-color: #f5f7fa;
+  padding: 32px 24px;
+  background-color: var(--background);
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .page-content {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  padding: 24px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 32px;
   height: 100%;
+  animation: fadeIn 0.3s ease;
 }
 
 .page-header {
-  margin-bottom: 24px;
+  margin-bottom: 32px;
   padding-bottom: 24px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .form-container {
-  background: white;
-  border-radius: 8px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
   padding: 32px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-md);
   max-width: 800px;
   margin: 0 auto;
 }
@@ -76,13 +96,15 @@
 .title-section h1 {
   font-size: 24px;
   font-weight: 600;
-  color: #111;
+  color: var(--text-primary);
   margin-bottom: 8px;
+  letter-spacing: -0.025em;
 }
 
 .subtitle {
-  color: #666;
+  color: var(--text-secondary);
   font-size: 14px;
+  line-height: 1.5;
 }
 
 .form-section {

@@ -79,15 +79,19 @@ const PlayerForm: React.FC = () => {
       }
       
       setLoading(true);
+      const playerData = {
+        ...values,
+        teamId: values.teamId
+      };
+      
       if (id) {
-        await updatePlayer(id, values);
+        await updatePlayer(id, playerData);
         message.success('Player updated successfully');
-        navigate('/players');
       } else {
-        await createPlayer(values);
+        await createPlayer(playerData);
         message.success('Player created successfully');
-        navigate('/players');
       }
+      navigate('/players');
     } catch (error) {
       message.error(id ? 'Failed to update player' : 'Failed to create player');
     } finally {

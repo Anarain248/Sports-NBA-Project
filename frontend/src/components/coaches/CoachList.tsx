@@ -5,7 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { getCoaches, deleteCoach } from '../../services/coachService.ts';
 import { Coach } from '../../models/Coach';
 import { UserOutlined, EditOutlined, DeleteOutlined, SearchOutlined, HomeOutlined } from '@ant-design/icons';
-import '../../styles/CoachList.css';
+
+import '../../styles/common/ListStyles.css';
+import '../../styles/common/TableStyles.css';
+import '../../styles/common/FormStyles.css';
 
 const CoachList: React.FC = () => {
   const [coaches, setCoaches] = useState<Coach[]>([]);
@@ -98,13 +101,13 @@ const CoachList: React.FC = () => {
   ];
 
   return (
-    <div className="coach-list-container">
-      <div className="header-section">
+    <div className="page-content">
+      <div className="page-header">
         <div className="title-section">
           <h1>Coaches Management</h1>
-          <span className="subtitle">Manage NBA team coaches</span>
+          <span className="subtitle">Manage NBA coaches</span>
         </div>
-        <Space>
+        <Space className="action-buttons">
           <Tooltip title="Return to teams management">
             <Button 
               icon={<HomeOutlined />}
@@ -114,7 +117,7 @@ const CoachList: React.FC = () => {
               Home
             </Button>
           </Tooltip>
-          <Tooltip title="Add a new coach to the system">
+          <Tooltip title="Add a new coach">
             <Button 
               type="primary" 
               icon={<UserOutlined />}
@@ -126,21 +129,31 @@ const CoachList: React.FC = () => {
           </Tooltip>
         </Space>
       </div>
+      <div className="content-section">
+        <div className="search-section">
+          <Input
+            placeholder="Search coaches..."
+            prefix={<SearchOutlined />}
+            value={searchText}
+            onChange={e => setSearchText(e.target.value)}
+            className="search-input"
+          />
+        </div>
 
-      <Input
-        placeholder="Search coaches..."
-        prefix={<SearchOutlined />}
-        value={searchText}
-        onChange={e => setSearchText(e.target.value)}
-        style={{ marginBottom: 16, width: 300 }}
-      />
-
-      <Table
-        columns={columns as any}
-        dataSource={coaches}
-        loading={loading}
-        rowKey="_id"
-      />
+        <Table
+          columns={columns as any}
+          dataSource={coaches}
+          loading={loading}
+          rowKey="_id"
+          pagination={{
+            pageSize: 10,
+            showSizeChanger: true,
+            showTotal: (total) => `Total ${total} ${total === 1 ? 'coach' : 'coaches'}`,
+          }}
+          className="teams-table"
+          style={{ marginTop: 0 }}
+        />
+      </div>
     </div>
   );
 };

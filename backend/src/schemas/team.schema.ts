@@ -4,6 +4,9 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
 @Schema({ timestamps: true })
 export class Team extends Document {
   @Prop({ required: true })
+  userId: string;
+
+  @Prop({ required: true })
   name: string;
 
   @Prop({ required: true })

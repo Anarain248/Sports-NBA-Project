@@ -72,4 +72,36 @@
   50% {
     transform: translateY(-10px);
   }
-} 
+}
+
+@media (max-width: 768px) {
+  .home-container {
+    padding: 1rem;
+  }
+
+  .hero-section {
+    padding: 2rem 1rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .feature-cards {
+    gap: 1rem;
+  }
+
+  .feature-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-icon {
+    font-size: 3rem;
+  }
+
+  .feature-cards {
+    grid-template-columns: 1fr;
+  }
+}

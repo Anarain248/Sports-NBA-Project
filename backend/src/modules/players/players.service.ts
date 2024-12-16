@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Player } from '../../schemas/player.schema';
@@ -12,10 +12,11 @@ export class PlayersService {
     @InjectModel('Team') private readonly teamModel: Model<Team>,
   ) {}
 
-  async create(createPlayerDto: CreatePlayerDto): Promise<Player> {
+  async create(createPlayerDto: CreatePlayerDto, userId: string): Promise<Player> {
     const createdPlayer = new this.playerModel({
       ...createPlayerDto,
-      team: createPlayerDto.teamId
+      team: createPlayerDto.teamId,
+      userId
     });
     const player = await createdPlayer.save();
     
@@ -29,15 +30,22 @@ export class PlayersService {
     return player.populate('team');
   }
 
-  async findAll(): Promise<Player[]> {
-    return this.playerModel.find().populate('team').exec();
+  async findAll(userId: string): Promise<Player[]> {
+    return this.playerModel.find({ userId })
+      .populate('team')
+      .exec();
   }
 
-  async findOne(id: string): Promise<Player> {
-    return this.playerModel.findById(id).populate('team').exec();
+  async findOne(id: string, userId: string): Promise<Player> {
+    return this.playerModel.findOne({ _id: id, userId }).populate('team').exec();
   }
 
-  async update(id: string, updatePlayerDto: CreatePlayerDto): Promise<Player> {
+  async update(id: string, updatePlayerDto: CreatePlayerDto, userId: string): Promise<Player> {
+    const player = await this.playerModel.findOne({ _id: id, userId });
+    if (!player) {
+      throw new NotFoundException('Player not found or unauthorized');
+    }
+
     // Remove player from old team
     await this.teamModel.updateMany(
       { players: id },
@@ -63,12 +71,16 @@ export class PlayersService {
       .exec();
   }
 
-  async remove(id: string): Promise<Player> {
-    // Remove player from team
+  async remove(id: string, userId: string): Promise<Player> {
+    const player = await this.playerModel.findOne({ _id: id, userId });
+    if (!player) {
+      throw new NotFoundException('Player not found or unauthorized');
+    }
+    
     await this.teamModel.updateMany(
       { players: id },
       { $pull: { players: id } }
     );
-    return this.playerModel.findByIdAndDelete(id).exec();
+    return this.playerModel.findOneAndDelete({ _id: id, userId }).exec();
   }
 } 

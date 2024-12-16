@@ -29,7 +29,6 @@ async function createAdminUser() {
     }
   });
 
-  console.log('Admin user and roles created successfully');
   await client.close();
 }
 

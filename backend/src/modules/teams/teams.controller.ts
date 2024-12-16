@@ -10,6 +10,7 @@ import {
   UseGuards,
   HttpException,
   HttpStatus,
+  Request,
 } from '@nestjs/common';
 import { TeamsService } from './teams.service';
 import { CreateTeamDto } from './dto/create-team.dto';
@@ -24,22 +25,18 @@ export class TeamsController {
   constructor(private readonly teamsService: TeamsService) {}
 
   @Get()
-  async findAll(@Query() query: any) {
+  async findAll(@Request() req) {
     try {
-      return await this.teamsService.findAll(query);
+      return await this.teamsService.findAll(req.user.sub);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string, @Request() req) {
     try {
-      const team = await this.teamsService.findOne(id);
-      if (!team) {
-        throw new HttpException('Team not found', HttpStatus.NOT_FOUND);
-      }
-      return team;
+      return await this.teamsService.findOne(id, req.user.sub);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
@@ -47,9 +44,9 @@ export class TeamsController {
 
   @Post()
   @Roles('admin')
-  async create(@Body() createTeamDto: CreateTeamDto) {
+  async create(@Body() createTeamDto: CreateTeamDto, @Request() req) {
     try {
-      return await this.teamsService.create(createTeamDto);
+      return await this.teamsService.create(createTeamDto, req.user.sub);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
@@ -57,13 +54,9 @@ export class TeamsController {
 
   @Patch(':id')
   @Roles('admin')
-  async update(@Param('id') id: string, @Body() updateTeamDto: UpdateTeamDto) {
+  async update(@Param('id') id: string, @Body() updateTeamDto: UpdateTeamDto, @Request() req) {
     try {
-      const team = await this.teamsService.update(id, updateTeamDto);
-      if (!team) {
-        throw new HttpException('Team not found', HttpStatus.NOT_FOUND);
-      }
-      return team;
+      return await this.teamsService.update(id, updateTeamDto, req.user.sub);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
@@ -71,31 +64,27 @@ export class TeamsController {
 
   @Delete(':id')
   @Roles('admin')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string, @Request() req) {
     try {
-      const team = await this.teamsService.remove(id);
-      if (!team) {
-        throw new HttpException('Team not found', HttpStatus.NOT_FOUND);
-      }
-      return team;
+      return await this.teamsService.remove(id, req.user.sub);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
   @Get(':id/players')
-  async getTeamPlayers(@Param('id') id: string) {
+  async getTeamPlayers(@Param('id') id: string, @Request() req) {
     try {
-      return await this.teamsService.getTeamPlayers(id);
+      return await this.teamsService.getTeamPlayers(id, req.user.sub);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
   @Get(':id/coach')
-  async getTeamCoach(@Param('id') id: string) {
+  async getTeamCoach(@Param('id') id: string, @Request() req) {
     try {
-      return await this.teamsService.getTeamCoach(id);
+      return await this.teamsService.getTeamCoach(id, req.user.sub);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }

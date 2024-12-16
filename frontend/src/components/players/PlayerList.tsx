@@ -5,7 +5,10 @@ import { getPlayers, deletePlayer } from '../../services/playerService.ts';
 import { Player } from '../../models/Player';
 import { EditOutlined, DeleteOutlined, UserAddOutlined, HomeOutlined, SearchOutlined } from '@ant-design/icons';
 import type { ColumnType } from 'antd/es/table';
-import '../../styles/PlayerList.css';
+
+import '../../styles/common/ListStyles.css';
+import '../../styles/common/TableStyles.css';
+import '../../styles/common/FormStyles.css';
 
 const PlayerList: React.FC = () => {
   const [players, setPlayers] = useState<Player[]>([]);
@@ -96,13 +99,13 @@ const PlayerList: React.FC = () => {
   ];
 
   return (
-    <div className="player-list-container">
-      <div className="header-section">
+    <div className="page-content">
+      <div className="page-header">
         <div className="title-section">
           <h1>Players Management</h1>
           <span className="subtitle">Manage NBA team players</span>
         </div>
-        <Space>
+        <Space className="action-buttons">
           <Tooltip title="Return to teams management">
             <Button 
               icon={<HomeOutlined />}
@@ -112,7 +115,7 @@ const PlayerList: React.FC = () => {
               Home
             </Button>
           </Tooltip>
-          <Tooltip title="Add a new player to the system">
+          <Tooltip title="Add a new player">
             <Button 
               type="primary" 
               icon={<UserAddOutlined />}
@@ -124,27 +127,31 @@ const PlayerList: React.FC = () => {
           </Tooltip>
         </Space>
       </div>
-
-      <Input
-        placeholder="Search players..."
-        prefix={<SearchOutlined />}
-        value={searchText}
-        onChange={e => setSearchText(e.target.value)}
-        style={{ marginBottom: 16, width: 300 }}
-      />
-
-      <Table
-        columns={columns}
-        dataSource={players}
-        loading={loading}
-        rowKey="_id"
-        pagination={{
-          pageSize: 10,
-          total: players.length,
-          showSizeChanger: true,
-          showQuickJumper: true,
-        }}
-      />
+      <div className="content-section">
+        <div className="search-section">
+          <Input
+            placeholder="Search players..."
+            prefix={<SearchOutlined />}
+            value={searchText}
+            onChange={e => setSearchText(e.target.value)}
+            className="search-input"
+          />
+        </div>
+        <Table
+          columns={columns}
+          dataSource={players}
+          loading={loading}
+          rowKey="_id"
+          pagination={{
+            pageSize: 10,
+            total: players.length,
+            showSizeChanger: true,
+            showTotal: (total) => `Total ${total} ${total === 1 ? 'player' : 'players'}`,
+          }}
+          className="teams-table"
+          style={{ marginTop: 0 }}
+        />
+      </div>
     </div>
   );
 };

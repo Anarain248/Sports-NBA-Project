@@ -14,10 +14,10 @@ const Home = () => {
       <div className="hero-section">
         <DribbbleOutlined className="hero-icon" />
         <Title level={1}>
-          <span className="title-highlight">NBA</span> Team Management System
+          <span className="title-highlight">NBA</span> Professional Team Management System
         </Title>
         <Paragraph className="subtitle">
-          Streamline your NBA team management with our comprehensive solution
+          A comprehensive solution for managing professional basketball teams, players, and coaching staff
         </Paragraph>
         <Space size="large">
           <Button type="primary" size="large" onClick={() => navigate('/login')}>
@@ -36,21 +36,21 @@ const Home = () => {
             <TeamOutlined className="feature-icon" />
             <Title level={3}>Team Management</Title>
             <Paragraph>
-              Create and manage NBA teams with detailed information about players and coaches
+              Professional team administration with roster management, conference tracking, and team analytics
             </Paragraph>
           </Card>
           <Card className="feature-card">
             <UserOutlined className="feature-icon" />
-            <Title level={3}>Player Tracking</Title>
+            <Title level={3}>Player Management</Title>
             <Paragraph>
-              Keep track of player statistics, positions, and team assignments
+              Complete player database with position tracking, performance metrics, and team assignment management
             </Paragraph>
           </Card>
           <Card className="feature-card">
             <TrophyOutlined className="feature-icon" />
-            <Title level={3}>Coach Directory</Title>
+            <Title level={3}>Coaching Staff</Title>
             <Paragraph>
-              Maintain a comprehensive directory of coaches and their specializations
+              Professional coaching staff directory with experience tracking, specializations, and team assignments
             </Paragraph>
           </Card>
         </div>

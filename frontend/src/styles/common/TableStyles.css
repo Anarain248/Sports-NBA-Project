@@ -16,30 +16,89 @@
 .title-section {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
 }
 
 .title-section h1 {
   margin: 0;
   font-size: 24px;
-  color: #1a1a1a;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
-.subtitle {
-  color: #8c8c8c;
+.title-section .subtitle {
   font-size: 14px;
-  margin-top: 4px;
+  color: var(--text-secondary);
+  margin: 0;
 }
 
 /* Table styles */
 .ant-table {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  background: transparent !important;
+  border-radius: var(--radius-md);
+}
+
+.ant-table-wrapper {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border);
 }
 
 .ant-table-thead > tr > th {
-  background: #fafafa;
-  font-weight: 500;
+  background: #f1f5f9 !important;
+  color: #1e293b !important;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 16px !important;
+  border-bottom: 1px solid var(--border) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ant-table-tbody > tr > td {
+  padding: 16px !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: #f8fafc !important;
+  transition: background-color 0.2s ease;
+}
+
+.ant-table-pagination {
+  margin: 0 !important;
+  padding: 12px 16px !important;
+  background: #f8fafc;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  border-top: 1px solid var(--border);
+}
+
+.search-section {
+  margin-bottom: 24px;
+}
+
+.ant-input.search-input {
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  font-size: 14px;
+  border: 2px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+  width: 350px;
+  height: 48px;
+}
+
+.ant-input.search-input:hover {
+  border-color: #60a5fa !important;
+  border-width: 2px !important;
+  box-shadow: 0 2px 8px rgba(96, 165, 250, 0.1) !important;
+}
+
+.ant-input.search-input:focus {
+  border-color: #60a5fa !important;
+  border-width: 2px !important;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15) !important;
 }
 
 /* Card styles for coach view */
@@ -56,4 +115,137 @@
 /* Empty state styling */
 .ant-empty {
   padding: 40px 0;
-} 
+}
+
+/* Add these styles */
+.team-name {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* Action Buttons */
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.action-button.ant-btn-primary {
+  background: #1890ff !important;
+  border-color: #1890ff !important;
+  color: white !important;
+}
+
+.action-button.ant-btn-primary .anticon,
+.action-button.ant-btn-dangerous .anticon,
+.action-button.ant-btn-primary span,
+.action-button.ant-btn-dangerous span {
+  color: white !important;
+}
+
+.action-button.ant-btn-primary:hover {
+  background: #40a9ff !important;
+  border-color: #40a9ff !important;
+  opacity: 0.95;
+}
+
+.action-button.ant-btn-primary[disabled] {
+  background: #1890ff !important;
+  border-color: #1890ff !important;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.action-button.ant-btn-dangerous {
+  background: #ff4d4f !important;
+  border-color: #ff4d4f !important;
+  color: white !important;
+}
+
+.action-button.ant-btn-dangerous:hover {
+  background: #ff7875 !important;
+  border-color: #ff7875 !important;
+}
+
+.action-button.ant-btn-dangerous[disabled] {
+  background: #ff4d4f !important;
+  border-color: #ff4d4f !important;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Table cell styles */
+.team-name {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+/* Conference tag */
+.conference-tag {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.conference-tag.western {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.conference-tag.eastern {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.ant-pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ant-pagination-total-text {
+  margin-right: auto !important;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.ant-pagination-item,
+.ant-pagination-prev,
+.ant-pagination-next {
+  margin: 0 !important;
+  min-width: 30px !important;
+  height: 30px !important;
+  line-height: 28px !important;
+}
+
+.ant-select-selector {
+  height: 30px !important;
+}
+
+.ant-select-selection-item {
+  line-height: 28px !important;
+}
+
+.ant-spin {
+  color: #60a5fa !important;
+}
+
+.ant-table-wrapper .ant-spin-container {
+  transition: opacity 0.3s ease;
+}
+
+.ant-table-wrapper .ant-spin-nested-loading {
+  background: white;
+  border-radius: var(--radius-md);
+}

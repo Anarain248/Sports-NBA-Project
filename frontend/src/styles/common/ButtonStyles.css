@@ -1,0 +1,119 @@
+.ant-btn {
+  font-weight: 500;
+  border-radius: 10px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 8px 20px;
+  font-size: 14px;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.3px;
+}
+
+.ant-btn-primary {
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  border: none;
+  color: white !important;
+  box-shadow: 0 2px 4px rgba(24, 144, 255, 0.1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ant-btn-primary:hover {
+  background: linear-gradient(135deg, #40a9ff 0%, #1890ff 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.2);
+}
+
+.ant-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(24, 144, 255, 0.1);
+}
+
+.ant-btn-default {
+  background: white;
+  border: 1px solid #e6e6e6;
+  color: #595959;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ant-btn-default:hover {
+  color: #1890ff;
+  border-color: #1890ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.1);
+}
+
+.ant-btn-default:active {
+  transform: translateY(0);
+}
+
+.action-button {
+  min-width: 110px;
+  justify-content: center;
+  font-weight: 600;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Danger button variant */
+.ant-btn-dangerous {
+  background: linear-gradient(135deg, #ff4d4f 0%, #f5222d 100%) !important;
+  border: none !important;
+  color: white !important;
+  box-shadow: 0 2px 4px rgba(245, 34, 45, 0.1);
+}
+
+.ant-btn-dangerous:hover {
+  background: linear-gradient(135deg, #ff7875 0%, #ff4d4f 100%) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 34, 45, 0.2);
+}
+
+.ant-btn-dangerous:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(245, 34, 45, 0.1);
+}
+
+/* Disabled state */
+.ant-btn[disabled] {
+  background: #f5f5f5 !important;
+  color: rgba(0, 0, 0, 0.25) !important;
+  border-color: #d9d9d9 !important;
+  box-shadow: none !important;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Loading state */
+.ant-btn-loading {
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* Icon alignment */
+.ant-btn > .anticon {
+  font-size: 16px;
+  vertical-align: -0.125em;
+}
+
+/* Disabled dangerous button */
+.ant-btn-dangerous[disabled] {
+  background: #ffccc7 !important;
+  border-color: #ffccc7 !important;
+  color: rgba(0, 0, 0, 0.25) !important;
+  box-shadow: none !important;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.ant-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.ant-btn-primary:hover {
+  opacity: 0.95;
+}

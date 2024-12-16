@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { ConfigProvider, Layout, Button } from 'antd';
 import { useAuth } from './contexts/AuthContext.tsx';
 import TeamList from './components/teams/TeamList.tsx';
@@ -17,12 +17,48 @@ import Login from './pages/Login.tsx';
 import Unauthorized from './pages/Unauthorized.tsx';
 import Register from './pages/Register.tsx';
 import './styles/common/Layout.css';
+import './styles/common/ButtonStyles.css';
 import Home from './pages/Home.tsx';
-import { HomeOutlined } from '@ant-design/icons';
+import { HomeOutlined, LogoutOutlined } from '@ant-design/icons';
 
 const { Header, Content } = Layout;
 
 const App = () => {
+  return (
+    <Router>
+      <AppWrapper />
+    </Router>
+  );
+};
+
+const AppWrapper = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const publicPaths = ['/', '/login', '/register'];
+  const isPublicPage = publicPaths.includes(location.pathname);
+
+  if (isPublicPage) {
+    return (
+      <AuthProvider>
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: '#1890ff',
+              colorText: '#000000',
+              colorTextLightSolid: '#ffffff',
+            },
+          }}
+        >
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </ConfigProvider>
+      </AuthProvider>
+    );
+  }
+
   return (
     <AuthProvider>
       <ConfigProvider
@@ -34,51 +70,32 @@ const App = () => {
           },
         }}
       >
-        <Router>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/unauthorized" element={<Unauthorized />} />
-            <Route
-              path="/*"
-              element={
-                <ProtectedRoute>
-                  <Layout className="app-container">
-                    <Header className="top-nav">
-                      <div className="nav-left">
-                        <h1>NBA Manager</h1>
-                      </div>
-                      <HeaderContent />
-                    </Header>
-                    <Content className="content-container">
-                      <Routes>
-                        <Route
-                          path="/teams"
-                          element={
-                            <ProtectedRoute adminOnly={true}>
-                              <TeamList />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route path="/teams/new" element={<TeamForm />} />
-                        <Route path="/teams/edit/:id" element={<TeamForm />} />
-                        <Route path="/coaches" element={<CoachList />} />
-                        <Route path="/coaches/new" element={<CoachForm />} />
-                        <Route path="/coaches/edit/:id" element={<CoachForm />} />
-                        <Route path="/players" element={<PlayerList />} />
-                        <Route path="/players/new" element={<PlayerForm />} />
-                        <Route path="/players/edit/:id" element={<PlayerForm />} />
-                        <Route path="/teams/:id/players" element={<TeamPlayers />} />
-                        <Route path="/teams/:id/coach" element={<TeamCoach />} />
-                      </Routes>
-                    </Content>
-                  </Layout>
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </Router>
+        <Layout className="app-container">
+          <Header className="top-nav">
+            <div className="nav-left">
+              <h2 onClick={() => navigate('/')} style={{ cursor: 'pointer', margin: 0 }}>
+                <span className="title-highlight">NBA</span> Professional Team Management System
+              </h2>
+            </div>
+            <HeaderContent />
+          </Header>
+          <Content className="content-container">
+            <Routes>
+              <Route path="/unauthorized" element={<Unauthorized />} />
+              <Route path="/*" element={<ProtectedRoute><TeamList /></ProtectedRoute>} />
+              <Route path="/teams/new" element={<TeamForm />} />
+              <Route path="/teams/edit/:id" element={<TeamForm />} />
+              <Route path="/coaches" element={<CoachList />} />
+              <Route path="/coaches/new" element={<CoachForm />} />
+              <Route path="/coaches/edit/:id" element={<CoachForm />} />
+              <Route path="/players" element={<PlayerList />} />
+              <Route path="/players/new" element={<PlayerForm />} />
+              <Route path="/players/edit/:id" element={<PlayerForm />} />
+              <Route path="/teams/:id/players" element={<TeamPlayers />} />
+              <Route path="/teams/:id/coach" element={<TeamCoach />} />
+            </Routes>
+          </Content>
+        </Layout>
       </ConfigProvider>
     </AuthProvider>
   );
@@ -107,7 +124,11 @@ const HeaderContent = () => {
         <span>{user?.username}</span>
         <span>({user?.role})</span>
       </div>
-      <Button onClick={handleLogout} type="primary">
+      <Button 
+        onClick={handleLogout} 
+        type="primary"
+        icon={<LogoutOutlined />}
+      >
         Logout
       </Button>
     </div>

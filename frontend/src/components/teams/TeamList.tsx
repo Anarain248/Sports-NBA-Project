@@ -14,7 +14,9 @@ import {
   HomeOutlined,
   UserAddOutlined
 } from '@ant-design/icons';
-import '../../styles/TeamList.css';
+import '../../styles/common/ListStyles.css';
+import '../../styles/common/TableStyles.css';
+import '../../styles/common/FormStyles.css';
 
 const TeamList: React.FC = () => {
   const [teams, setTeams] = useState<Team[]>([]);
@@ -34,7 +36,6 @@ const TeamList: React.FC = () => {
       team.city.toLowerCase().includes(searchText.toLowerCase()) ||
       team.conference.toLowerCase().includes(searchText.toLowerCase())
     );
-    console.log(teams)
     setFilteredTeams(filtered);
   }, [searchText, teams]);
 
@@ -42,7 +43,6 @@ const TeamList: React.FC = () => {
     try {
       setLoading(true);
       const fetchedTeams = await getTeams();
-      console.log(fetchedTeams)
       setTeams(fetchedTeams);
       setFilteredTeams(fetchedTeams);
     } catch (error) {
@@ -77,30 +77,22 @@ const TeamList: React.FC = () => {
   const columns = [
     {
       title: 'Team',
-      dataIndex: 'name',
       key: 'name',
-      render: (name: string, record: Team) => (
-        <div className="team-name-cell">
-          <span className="team-name">{name}</span>
-          <span className="team-city">{record.city}</span>
-        </div>
-      ),
-      sorter: (a: Team, b: Team) => a.name.localeCompare(b.name),
+      render: (_: string, record: Team) => (
+        <span className="team-name">
+          {`${record.city} ${record.name}`}
+        </span>
+      )
     },
     {
       title: 'Conference',
       dataIndex: 'conference',
       key: 'conference',
-      render: (conference: string) => (
-        <Tag color={conference === 'Eastern' ? 'blue' : 'red'}>
-          {conference}
-        </Tag>
-      ),
-      filters: [
-        { text: 'Eastern', value: 'Eastern' },
-        { text: 'Western', value: 'Western' },
-      ],
-      onFilter: (value: string, record: Team) => record.conference === value,
+      render: (text: string) => (
+        <span className={`conference-tag ${text.toLowerCase()}`}>
+          {text}
+        </span>
+      )
     },
     {
       title: 'Coach',
@@ -236,7 +228,7 @@ const TeamList: React.FC = () => {
           pagination={{
             pageSize: 10,
             showSizeChanger: true,
-            showTotal: (total) => `Total ${total} teams`,
+            showTotal: (total) => `Total ${total} ${total === 1 ? 'team' : 'teams'}`,
           }}
           className="teams-table"
         />

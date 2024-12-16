@@ -1,4 +1,4 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Team } from '../../schemas/team.schema';
@@ -27,30 +27,38 @@ export class TeamsService {
     }
   }
 
-  async findAll(query?: any): Promise<Team[]> {
-    return this.teamModel.find(query || {})
+  async findAll(userId: string): Promise<Team[]> {
+    const teams = await this.teamModel.find({ userId })
       .populate({
         path: 'coach',
-        select: 'firstName lastName'
+        select: 'firstName lastName experience specialization'
       })
       .exec();
+    return teams;
   }
 
-  async findOne(id: string): Promise<Team> {
+  async findOne(id: string, userId: string): Promise<Team> {
     return this.teamModel
-      .findById(id)
+      .findOne({ _id: id, userId })
       .populate('coach')
       .populate('players')
       .exec();
   }
 
-  async create(createTeamDto: CreateTeamDto): Promise<Team> {
+  async create(createTeamDto: CreateTeamDto, userId: string): Promise<Team> {
     await this.checkDuplicateTeam(createTeamDto.name);
-    const createdTeam = new this.teamModel(createTeamDto);
+    const createdTeam = new this.teamModel({
+      ...createTeamDto,
+      userId
+    });
     return createdTeam.save();
   }
 
-  async update(id: string, updateTeamDto: UpdateTeamDto): Promise<Team> {
+  async update(id: string, updateTeamDto: UpdateTeamDto, userId: string): Promise<Team> {
+    const team = await this.teamModel.findOne({ _id: id, userId });
+    if (!team) {
+      throw new NotFoundException('Team not found or unauthorized');
+    }
     if (updateTeamDto.name) {
       await this.checkDuplicateTeam(updateTeamDto.name, id);
     }
@@ -59,21 +67,21 @@ export class TeamsService {
       .exec();
   }
 
-  async remove(id: string): Promise<Team> {
-    return this.teamModel.findByIdAndDelete(id).exec();
+  async remove(id: string, userId: string): Promise<Team> {
+    return this.teamModel.findOneAndDelete({ _id: id, userId }).exec();
   }
 
-  async getTeamPlayers(id: string) {
+  async getTeamPlayers(id: string, userId: string) {
     const team = await this.teamModel
-      .findById(id)
+      .findOne({ _id: id, userId })
       .populate('players')
       .exec();
     return team?.players || [];
   }
 
-  async getTeamCoach(id: string) {
+  async getTeamCoach(id: string, userId: string) {
     const team = await this.teamModel
-      .findById(id)
+      .findOne({ _id: id, userId })
       .populate('coach')
       .exec();
     return team?.coach || null;

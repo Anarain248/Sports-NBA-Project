@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Result } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext.tsx';
+import { LogoutOutlined } from '@ant-design/icons';
 
 const Unauthorized= () => {
   const navigate = useNavigate();
@@ -21,7 +22,11 @@ const Unauthorized= () => {
         <Button type="primary" onClick={() => navigate(-1)} key="back">
           Go Back
         </Button>,
-        <Button onClick={handleLogout} key="logout">
+        <Button 
+          icon={<LogoutOutlined />} 
+          onClick={handleLogout}
+          key="logout"
+        >
           Logout
         </Button>,
       ]}

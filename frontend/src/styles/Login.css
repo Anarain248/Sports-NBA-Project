@@ -27,4 +27,24 @@
 
 .login-container .ant-btn {
   width: 100%;
+}
+
+/* Style to match username and password fields */
+.ant-input,
+.ant-input-affix-wrapper {
+  border-radius: 20px !important;
+  height: 48px !important;
+  padding: 8px 16px !important;
+  box-shadow: none !important;
+}
+
+.ant-input-affix-wrapper input.ant-input {
+  height: 32px !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.ant-input-affix-wrapper .ant-input-suffix {
+  margin-right: 4px;
 } 
