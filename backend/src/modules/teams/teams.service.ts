@@ -11,9 +11,10 @@ export class TeamsService {
     @InjectModel(Team.name) private readonly teamModel: Model<Team>,
   ) {}
 
-  private async checkDuplicateTeam(name: string, excludeId?: string): Promise<void> {
+  private async checkDuplicateTeam(name: string, userId: string, excludeId?: string): Promise<void> {
     const query = {
-      name: { $regex: new RegExp(`^${name}$`, 'i') }  // Case-insensitive match
+      name: { $regex: new RegExp(`^${name}$`, 'i') },  // Case-insensitive match
+      userId: userId  // Add userId to the query
     };
 
     if (excludeId) {
@@ -23,7 +24,7 @@ export class TeamsService {
     const existingTeam = await this.teamModel.findOne(query);
     
     if (existingTeam) {
-      throw new ConflictException(`A team named "${name}" already exists`);
+      throw new ConflictException(`You already have a team named "${name}"`);
     }
   }
 
@@ -46,7 +47,7 @@ export class TeamsService {
   }
 
   async create(createTeamDto: CreateTeamDto, userId: string): Promise<Team> {
-    await this.checkDuplicateTeam(createTeamDto.name);
+    await this.checkDuplicateTeam(createTeamDto.name, userId);
     const createdTeam = new this.teamModel({
       ...createTeamDto,
       userId
@@ -60,7 +61,7 @@ export class TeamsService {
       throw new NotFoundException('Team not found or unauthorized');
     }
     if (updateTeamDto.name) {
-      await this.checkDuplicateTeam(updateTeamDto.name, id);
+      await this.checkDuplicateTeam(updateTeamDto.name, userId, id);
     }
     return this.teamModel
       .findByIdAndUpdate(id, updateTeamDto, { new: true })

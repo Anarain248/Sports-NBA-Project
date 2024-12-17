@@ -109,13 +109,7 @@ const PlayerForm: React.FC = () => {
       player._id !== id
     );
 
-    const isDuplicateCoach = existingCoaches.some(coach => 
-      coach.firstName.trim().toLowerCase() === normalizedFirstName &&
-      coach.lastName.trim().toLowerCase() === normalizedLastName
-    );
-
-    const duplicateType = isDuplicatePlayer ? 'player' : isDuplicateCoach ? 'coach' : null;
-    return { isDuplicate: isDuplicatePlayer || isDuplicateCoach, duplicateType };
+    return { isDuplicate: isDuplicatePlayer, duplicateType: isDuplicatePlayer ? 'player' : null };
   };
 
   const checkDuplicateJersey = (jerseyNumber: number, teamId: string) => {
